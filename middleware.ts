@@ -1,5 +1,5 @@
 // import authConfig from "auth.config";
-import { auth } from "./auth"
+// import { auth } from "./auth"
 import {
   DEFAULT_LOGIN_REDIRECT,
   apiAuthPrefix,
@@ -7,9 +7,12 @@ import {
   publicRoutes
 } from "./routes";
 
+import authConfig from "./auth.config";
+import NextAuth from "next-auth";
+const { auth: middleware } = NextAuth(authConfig);
 // export const { auth } = NextAuth(authConfig)
 
-export default auth((req) => {
+export default middleware((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
@@ -34,7 +37,7 @@ export default auth((req) => {
       callbackUrl += nextUrl.search; 
     }
     const encodedCallbackUrl = encodeURIComponent(callbackUrl);
-    
+
     return Response.redirect(new URL(
       `/auth/login?callbackUrl=${encodedCallbackUrl}`,
       nextUrl
@@ -42,6 +45,8 @@ export default auth((req) => {
   };
   // req.auth
 })
+
+
 
 // Optionally, don't invoke Middleware on some paths
 // Read more: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher

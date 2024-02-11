@@ -7,7 +7,7 @@ import authConfig from "./auth.config";
 
 const authOptions: NextAuthConfig = {
   adapter: DrizzleAdapter(db),
-  session: { strategy: "database" },
+  session: { strategy: "jwt" },
   ...authConfig
 }
 
